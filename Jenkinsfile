@@ -1,12 +1,10 @@
 pipeline {
        agent any
-    tools { 
-        maven 'Maven 3.3.9' 
-        jdk 'jdk8' 
-    }
     stages {
         stage('Build') {
             steps {
+                sh 'sudo apt install default-jdk'
+                sh 'sudo apt install maven'
                 sh 'mvn -B -DskipTests clean package'
             }
         }
