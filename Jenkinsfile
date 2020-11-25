@@ -3,8 +3,8 @@ pipeline {
     stages {
         stage('Build') {
             steps {
-                sh 'sudo apt install default-jdk'
-                sh 'sudo apt install maven'
+                sh 'sudo apt install default-jdk -y'
+                sh 'sudo apt install maven -y'
                 sh 'mvn -B -DskipTests clean package'
             }
         }
