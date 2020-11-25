@@ -6,7 +6,11 @@ import org.apache.logging.log4j.Logger;
 import com.qa.ims.controller.Action;
 import com.qa.ims.controller.CrudController;
 import com.qa.ims.controller.CustomerController;
+import com.qa.ims.controller.ItemController;
+import com.qa.ims.controller.OrderController;
 import com.qa.ims.persistence.dao.CustomerDAO;
+import com.qa.ims.persistence.dao.ItemDAO;
+import com.qa.ims.persistence.dao.OrderDAO;
 import com.qa.ims.persistence.domain.Domain;
 import com.qa.ims.utils.DBUtils;
 import com.qa.ims.utils.Utils;
@@ -17,14 +21,29 @@ public class IMS {
 
 	private final CustomerController customers;
 	private final Utils utils;
+	private final ItemController item;
+	private final OrderController orders;
 
 	public IMS() {
 		this.utils = new Utils();
 		final CustomerDAO custDAO = new CustomerDAO();
 		this.customers = new CustomerController(custDAO, utils);
+		final ItemDAO itemDAO = new ItemDAO();
+		this.item = new ItemController(itemDAO, utils);
+		final OrderDAO orderDAO = new OrderDAO();
+		this.orders= new OrderController(orderDAO, utils);
+	}
+	
+	public IMS(Utils utils, CustomerController customers, ItemController item, OrderController orders) {
+		this.utils = utils;
+		this.customers = customers;
+		this.item = item;
+		this.orders = orders;
 	}
 
+
 	public void imsSystem() {
+		LOGGER.info("Hi, this is Paul's Inventory Management System. You'll now be asked for your username and password.");
 		LOGGER.info("What is your username");
 		String username = utils.getString();
 		LOGGER.info("What is your password");
@@ -46,10 +65,10 @@ public class IMS {
 					active = this.customers;
 					break;
 				case ITEM:
-					active = null;
+					active =  this.item;;
 					break;
 				case ORDER:
-					active = null;
+					active = this.orders;
 					break;
 				case STOP:
 					return;
